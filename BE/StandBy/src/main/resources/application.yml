@@ -1,0 +1,115 @@
+spring:
+  profiles:
+    active: prod
+server:
+  tomcat:
+    relaxed-query-chars: "[,],{,},|"
+
+---
+spring:
+  servlet:
+    multipart:
+      enabled: true  # Multipart 기능 활성화
+      #      max-file-size: 10MB  # 개별 파일 최대 크기
+      max-request-size: 50MB  # 전체 요청 최대 크기
+  jwt:
+    secret: ${JWT_SECRET_KEY}
+  config:
+    import: optional:file:.env[.properties]
+    activate:
+      on-profile: local
+  application:
+    name: StandBy
+  datasource:
+    url: jdbc:mysql://localhost:3306/jpa?serverTimezone=UTC
+    username: ${MYSQL_USER}
+    password: ${MYSQL_PASSWORD}
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+#  sql:
+#    init:
+#      mode: always  # import.sql 또는 data.sql 실행 활성화
+#      mode: never
+kakao:
+  rest-api-key: ${NEXT_PUBLIC_KAKAO_REST_API_KEY}
+  redirect-uri: ${NEXT_PUBLIC_KAKAO_REDIRECT_URI}
+image:
+  upload-dir: ${UPLOAD_DIR}
+
+
+
+---
+spring:
+  servlet:
+    multipart:
+      enabled: true  # Multipart 기능 활성화
+      max-file-size: 10MB  # 개별 파일 최대 크기
+      max-request-size: 50MB  # 전체 요청 최대 크기
+  jwt:
+    secret: ${JWT_SECRET_KEY}
+  config:
+    activate:
+      on-profile: prod
+  application:
+    name: StandBy
+  datasource:
+    url: ${DB_URL}
+    username: ${MYSQL_USER}
+    password: ${MYSQL_PASSWORD}
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+kakao:
+  rest-api-key: ${NEXT_PUBLIC_KAKAO_REST_API_KEY}
+  redirect-uri: ${NEXT_PUBLIC_KAKAO_REDIRECT_URI}
+image:
+  upload-dir: ${UPLOAD_DIR}
+
+
+
+
+---
+spring:
+  servlet:
+    multipart:
+      enabled: true  # Multipart 기능 활성화
+      max-file-size: 10MB  # 개별 파일 최대 크기
+      max-request-size: 50MB  # 전체 요청 최대 크기
+  jwt:
+    secret: ${JWT_SECRET_KEY}
+  config:
+    activate:
+      on-profile: dev
+  application:
+    name: StandBy
+  datasource:
+    url: ${DB_URL}
+    username: no
+    password: no
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  sql:
+    init:
+      mode: always  # import.sql 또는 data.sql 실행 활성화
+kakao:
+  rest-api-key: ${NEXT_PUBLIC_KAKAO_REST_API_KEY}
+  redirect-uri: ${NEXT_PUBLIC_KAKAO_REDIRECT_URI}
+image:
+  upload-dir: ${UPLOAD_DIR}

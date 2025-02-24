@@ -1,0 +1,46 @@
+pipeline {
+    agent any
+    
+    environment {
+        GIT_REPO = "lab.ssafy.com/s12-webmobile2-sub1/S12P11B211.git"
+        GIT_BRANCH = "master"
+    }
+
+    stages {
+        stage('Clone Repository') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'gitlabtoken', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASS')]) {
+                    script {
+                        echo "🔄 Cloning Master (Production Server)"
+                        sh '''
+                        rm -rf master
+                        git clone -b $GIT_MASTER_BRANCH https://${GIT_USER}:${GIT_PASS}@${GIT_REPO} master
+                        '''
+                    }
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                script {
+                    dir('master') {
+                        echo "🚀 Deploying Master (Production Server)"
+                        sh 'docker-compose -f docker-compose-base.yml -f docker-compose-prod.yml down'
+                        sh 'docker-compose -f docker-compose-base.yml -f docker-compose-prod.yml up --build -d'
+                        sh 'docker ps -a'
+                    }
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "✅ Deployment Success!"
+        }
+        failure {
+            echo "❌ Deployment Failed!"
+        }
+    }
+}

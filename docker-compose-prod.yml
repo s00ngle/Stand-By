@@ -1,0 +1,89 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:   # Next.js 코드가 있는 폴더
+      context: ./FE/stand-by
+      args:
+        - NEXT_PUBLIC_KAKAO_REST_API_KEY=${NEXT_PUBLIC_KAKAO_REST_API_KEY}
+        - NEXT_PUBLIC_KAKAO_REDIRECT_URI=${NEXT_PUBLIC_KAKAO_REDIRECT_URI}
+        - UPLOAD_DIR=${UPLOAD_DIR}
+    environment:
+      - NEXT_PUBLIC_KAKAO_REST_API_KEY=${NEXT_PUBLIC_KAKAO_REST_API_KEY}
+      - NEXT_PUBLIC_KAKAO_REDIRECT_URI=${NEXT_PUBLIC_KAKAO_REDIRECT_URI}
+      - UPLOAD_DIR=${UPLOAD_DIR}
+    container_name: frontend
+    networks:
+      - app_network
+    ports:
+      - "3000:3000"
+
+  backend:
+    build:
+      context: ./BE/StandBy
+      args:
+        NEXT_PUBLIC_KAKAO_REST_API_KEY: ${NEXT_PUBLIC_KAKAO_REST_API_KEY}
+        NEXT_PUBLIC_KAKAO_REDIRECT_URI: ${NEXT_PUBLIC_KAKAO_REDIRECT_URI}
+        DB_URL: ${DB_URL}
+        MYSQL_USER: ${MYSQL_USER}
+        MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+        JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+        UPLOAD_DIR: ${UPLOAD_DIR}
+    environment:
+      - NEXT_PUBLIC_KAKAO_REST_API_KEY=${NEXT_PUBLIC_KAKAO_REST_API_KEY}
+      - NEXT_PUBLIC_KAKAO_REDIRECT_URI=${NEXT_PUBLIC_KAKAO_REDIRECT_URI}
+      - DB_URL=${DB_URL}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+      - UPLOAD_DIR=${UPLOAD_DIR}
+    container_name: backend
+    volumes:
+      - /home/images:/images
+    depends_on:
+      - database
+    networks:
+      - app_network
+    ports:
+      - "8080:8080"
+
+  database:
+    image: mysql:8.0.40
+    container_name: database
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: jpa
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - /home/mysql_data:/var/lib/mysql
+    networks:
+      - app_network
+    ports:
+      - "3306:3306"
+  # nginx:
+  #   image: nginx:latest
+  #   container_name: nginx
+  #   depends_on:
+  #     - backend
+  #     - frontend
+  #   networks:
+  #     - app_network
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #   volumes:
+  #     - /home/ubuntu/jenkins-data/workspace/B211StandBy/master/nginx/nginx-prod.conf:/etc/nginx/nginx.conf:ro
+
+
+volumes:
+  db_data:
+
+
+networks:
+  app_network:
+    driver: bridge
+
+
+
+
