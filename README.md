@@ -42,7 +42,14 @@
 | 알바몬, 알바천국 | 촬영 업종 특화 X, 평가 기능 없음 | 촬영 업계 맞춤형 기능 제공 |
 | 필름 메이커스 | UI/UX 불편, 비효율적인 절차 | 직관적이고 간편한 구인·구직 과정 |
 
+## 서비스 화면
+<img width="1213" height="695" alt="image" src="https://github.com/user-attachments/assets/e55a76d3-56e2-447e-9ca9-504a97f31e9c" />
+<img width="1215" height="727" alt="image" src="https://github.com/user-attachments/assets/30333683-8ed3-4e01-b9d8-bf2f22cf3b75" />
+
+
 ## 🛠 기술 스택
+<img width="1276" height="881" alt="image" src="https://github.com/user-attachments/assets/29e4b037-c8e6-41e0-858b-8ad636be0bb0" />
+
 ### Frontend
 - **Next.js** + **TypeScript**
 - **TailwindCSS** (스타일링)
@@ -59,6 +66,10 @@
 - **AWS EC2** (서버 호스팅)
 - **NGINX** (리버스 프록시)
 - **Jenkins** + **GitLab** (CI/CD 자동화)
+
+### ERD
+<img width="1879" height="1044" alt="image" src="https://github.com/user-attachments/assets/7dc9e4c9-d0a1-4444-8dfc-d1f10485864b" />
+
 
 ## 🎯 향후 확장 계획
 ### 1. 면접 절차 개선
